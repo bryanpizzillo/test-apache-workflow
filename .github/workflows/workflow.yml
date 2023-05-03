@@ -33,6 +33,7 @@ jobs:
           CI: true
       - name: Copy built files to apache
         run: |
-          docker cp ./build/ apache:/usr/local/apache2/htdocs
+          CONTAINER_ID=$(docker ps --filter "name=apache" --quiet)
+          docker cp ./build/ "$CONTAINER_ID:/usr/local/apache2/htdocs"
       - name: Test-ish
         run: curl http://localhost:6006/index.html
