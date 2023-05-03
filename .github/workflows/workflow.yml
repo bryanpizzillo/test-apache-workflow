@@ -33,7 +33,6 @@ jobs:
           CI: true
       - name: Copy built files to apache
         run: |
-          docker exec apache mkdir /usr/local/apache2/htdocs/pr-32
-          docker cp ./build/ apache:/usr/local/apache2/htdocs/pr-32
+          docker cp ./build/ apache:/usr/local/apache2/htdocs
       - name: Test-ish
-        run: curl http://localhost:6006/pr-32/index.html
+        run: curl http://localhost:6006/index.html
