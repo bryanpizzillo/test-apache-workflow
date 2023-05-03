@@ -1,0 +1,37 @@
+name: Test Workflow
+on: ['push']
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-20.04
+    services:
+      apache:
+        image: httpd:2.4
+        ports:
+          - 6006:80
+    steps:
+        ## This clones and checks out.
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      ## Setup node and npm caching.
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          registry-url: https://npm.pkg.github.com
+          scope: '@nciocpl'
+      - name: Install
+        run: npm ci
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: npm run build
+        env:
+          CI: true
+      - name: Copy built files to apache
+        run: docker cp ./build/ apache:/usr/local/apache2/htdocs/pr-32
+      - name: Test-ish
+        run: curl http://apache/pr-32/index.html
