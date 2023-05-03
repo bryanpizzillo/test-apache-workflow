@@ -35,7 +35,7 @@ jobs:
         run: docker ps
       - name: Copy built files to apache
         run: |
-          CONTAINER_ID=$(docker ps -q --filter "image=httpd:2.4" --quiet)
+          CONTAINER_ID=$(docker ps -q --filter "ancestor=httpd:2.4")
           docker cp ./build/ "$CONTAINER_ID:/usr/local/apache2/htdocs"
       - name: Test-ish
         run: curl http://localhost:6006/index.html
