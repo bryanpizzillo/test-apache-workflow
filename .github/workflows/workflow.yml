@@ -34,4 +34,4 @@ jobs:
       - name: Copy built files to apache
         run: docker cp ./build/ apache:/usr/local/apache2/htdocs/pr-32
       - name: Test-ish
-        run: curl http://apache/pr-32/index.html
+        run: curl http://localhost:6006/pr-32/index.html
